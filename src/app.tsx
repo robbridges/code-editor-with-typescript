@@ -8,10 +8,14 @@ const App = () => {
   const [code, setCode]= useState('');
 
   const startService = async () => {
+  try {
     ref.current = await esbuild.startService({
       worker: true,
       wasmURL: '/esbuild.wasm'
     });
+  } catch (err) {
+    console.log('there was an error!');
+  }
     
   };
 
@@ -19,13 +23,18 @@ const App = () => {
     startService();
   }, []);
 
-  const onClick = () => {
+  const onClick = async () => {
     if (!ref.current) {
       return;
     }
 
-    console.log(ref.current);
-  }
+    const result = await ref.current.transform(input, {
+      loader: 'jsx',
+      target: 'es2015',
+    });
+
+    setCode(result.code);
+  };
 
   return (
   <div>
