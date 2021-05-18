@@ -7,5 +7,5 @@ test('Components render to screen', () => {
   render(<App />);
 
   const textArea = screen.getByRole('textbox');
-  expect(textArea).toHaveTextContent("Enter text here");
+  expect(textArea).toHaveTextContent("Enter Text Here");
 })
