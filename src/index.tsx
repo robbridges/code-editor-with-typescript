@@ -1,10 +1,10 @@
 import ReactDOM from 'react-dom';
+import App from './app'
 
-const App = () => {
-  return <h1>hi</h1>;
-}
 
 ReactDOM.render(
   <App />,
   document.querySelector('#root')
 );
+
+export default App;
