@@ -6,14 +6,7 @@ const fileCache = localForage.createInstance({
   name: 'filecache',
 });
 
-// immediate invoke an anomyous function to test file cache
-( async() => {
-  await fileCache.setItem('color', 'red');
 
-  const color = await fileCache.getItem('color');
-
-  console.log(color);
-})()
 
 //esbuild plugin 
 export const unpkgPathPlugin = () => {
@@ -59,12 +52,28 @@ export const unpkgPathPlugin = () => {
             `,
           };
         }
+
+        //check to see if the file is stored in our local forage, IE if the key value is already stored in the cache
+        // if it is return immediately.
+        const cachedResult = await fileCache.getItem(args.path);
+        if (cachedResult) {
+          return cachedResult;
+        }
+
         const { data, request } = await axios.get(args.path);
-        return {
+
+        //store resonse in cache
+        const result = {
           loader: 'jsx',
           contents: data,
           resolveDir: new URL('./', request.responseURL).pathname,
-        }
+        };
+
+        //store resonse in cache
+        await fileCache.setItem(args.path, result);
+
+        return result;
+
       });
     },
   };
