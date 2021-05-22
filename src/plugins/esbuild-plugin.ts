@@ -9,7 +9,7 @@ const fileCache = localForage.createInstance({
 
 
 //esbuild plugin 
-export const unpkgPathPlugin = () => {
+export const unpkgPathPlugin = (inputCode: string) => {
   return {
     //name really only for debug purposes only in the event multiple plugins
     name: 'unpkg-path-plugin',
@@ -46,16 +46,14 @@ export const unpkgPathPlugin = () => {
         if (args.path === 'index.js') {
           return {
             loader: 'jsx',
-            contents: `
-              import React from 'react';
-              console.log(React);
-            `,
+            contents: inputCode,
           };
         }
 
         //check to see if the file is stored in our local forage, IE if the key value is already stored in the cache
         // if it is return immediately.
-        const cachedResult = await fileCache.getItem(args.path);
+        const cachedResult = await fileCache.getItem<esbuild.OnLoadResult>(args.path);
+
         if (cachedResult) {
           return cachedResult;
         }
@@ -63,7 +61,7 @@ export const unpkgPathPlugin = () => {
         const { data, request } = await axios.get(args.path);
 
         //store resonse in cache
-        const result = {
+        const result: esbuild.OnLoadResult = {
           loader: 'jsx',
           contents: data,
           resolveDir: new URL('./', request.responseURL).pathname,
