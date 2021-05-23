@@ -17,16 +17,27 @@ export const fetchPlugin = (inputCode: string) => {
         contents: inputCode,
       };
     });
+
+    /* 
+    we technically do not have to return any file on an onload function ES build will assume it is a false call and move right on along. 
+    It will then fall through into our other checks that do return something, we can abstract out the cached result shared code between css on load and Javascript on load files
     
-    build.onLoad({filter: /.css$/}, async (args: any) => {
-      //check to see if the file is stored in our local forage, IE if the key value is already stored in the cache
+    */
+    build.onLoad({filter: /.*/}, async (args:any) => {
+           //check to see if the file is stored in our local forage, IE if the key value is already stored in the cache
       // if it is return immediately.
       const cachedResult = await fileCache.getItem<esbuild.OnLoadResult>(args.path);
     
       if (cachedResult) {
         return cachedResult;
       }
+      
+    });
     
+    build.onLoad({filter: /.css$/}, async (args: any) => {
+      //check to see if the file is stored in our local forage, IE if the key value is already stored in the cache
+      // if it is return immediately.
+      
       const { data, request } = await axios.get(args.path);
       
 
@@ -59,16 +70,6 @@ export const fetchPlugin = (inputCode: string) => {
       
     build.onLoad({ filter: /.*/ }, async (args: any) => {
       // we are overriding ES build trying to look up the file in the file system.
-      
-    
-      //check to see if the file is stored in our local forage, IE if the key value is already stored in the cache
-      // if it is return immediately.
-      const cachedResult = await fileCache.getItem<esbuild.OnLoadResult>(args.path);
-    
-      if (cachedResult) {
-        return cachedResult;
-      }
-    
       const { data, request } = await axios.get(args.path);
 
 
