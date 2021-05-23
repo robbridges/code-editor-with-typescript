@@ -28,14 +28,19 @@ export const fetchPlugin = (inputCode: string) => {
       // }
     
       const { data, request } = await axios.get(args.path);
-      // this does not work.. need to figure out why...
       const fileType = args.path.match(/.css$/) ? 'css' : 'jsx';
 
-      // we are going to try to directly inport the css file with some javascript. 
+      // we need to escape any new lines, double quotes or single quotes and replace them to be ignored
+      const escaped = data
+      .replace(/\n/g, '')
+      .replace(/"/g, '\\"')
+      .replace(/'/g, "\\'")
+
+      // we are going to try to directly inport the css file with some javascript. This will not work if the css has import statements or font files.. exct. For now good enough!
       const contents = fileType === 'css' 
       ? `
         const style = document.createElement('style');
-        style.innerText = 'body {background-color: "red"}';
+        style.innerText = '${escaped}';
         document.head.appendChild(style);
       `
        : data;
