@@ -21,18 +21,29 @@ export const fetchPlugin = (inputCode: string) => {
     
       //check to see if the file is stored in our local forage, IE if the key value is already stored in the cache
       // if it is return immediately.
-      const cachedResult = await fileCache.getItem<esbuild.OnLoadResult>(args.path);
+      // const cachedResult = await fileCache.getItem<esbuild.OnLoadResult>(args.path);
     
-      if (cachedResult) {
-        return cachedResult;
-      }
+      // if (cachedResult) {
+      //   return cachedResult;
+      // }
     
       const { data, request } = await axios.get(args.path);
-    
+      // this does not work.. need to figure out why...
+      const fileType = args.path.match(/.css$/) ? 'css' : 'jsx';
+
+      // we are going to try to directly inport the css file with some javascript. 
+      const contents = fileType === 'css' 
+      ? `
+        const style = document.createElement('style');
+        style.innerText = 'body {background-color: "red"}';
+        document.head.appendChild(style);
+      `
+       : data;
+
       //store resonse in cache
       const result: esbuild.OnLoadResult = {
         loader: 'jsx',
-        contents: data,
+        contents,
         resolveDir: new URL('./', request.responseURL).pathname,
       };
     
