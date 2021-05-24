@@ -10,34 +10,37 @@ typescript knows what values are being passed in. We are giving users an option
 the option to even format their code with prettier!
 */
 interface CodeEditorProps {
-  initalValue: string;
+  initialValue: string;
   onChange(value: string): void;
 
 }
 
-const CodeEditor: React.FC<CodeEditorProps> = ({ onChange, initalValue }) => {
+const CodeEditor: React.FC<CodeEditorProps> = ({ onChange, initialValue }) => {
   const editorRef = useRef<any>();
   
-  const onEditorDidMount: EditorDidMount = (getValue, monacoEditor) => {
-    editorRef.current = monacoEditor;
-    monacoEditor.onDidChangeModelContent(() => {
+  const onEditorDidMount: EditorDidMount = (getValue, MonacoEditor) => {
+    editorRef.current = MonacoEditor;
+    MonacoEditor.onDidChangeModelContent(() => {
       onChange(getValue());
     });
 
-    monacoEditor.getModel()?.updateOptions({ tabSize: 2});
+    MonacoEditor.getModel()?.updateOptions({ tabSize: 2});
   };
 
   const onFormatClick = () => {
+    // get current value from editor
     const unformatted = editorRef.current.getModel().getValue();
 
+    // format that value
     const formatted = prettier.format(unformatted, {
       parser: 'babel',
       plugins: [parser],
       useTabs: false,
       semi: true,
       singleQuote: true,
-    })
+    });
 
+    // set the formatted value back in the editor
     editorRef.current.setValue(formatted);
   };
   
@@ -45,25 +48,24 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ onChange, initalValue }) => {
   return (
     <div>
       <button onClick={onFormatClick}>Format</button>
-   <MonacoEditor
-    editorDidMount={onEditorDidMount}
-    value= {initalValue}
-    theme='dark' 
-    language="javascript" 
-    height="500px"
-    options={{
-      wordWrap: 'on',
-      minimap: { enabled: false },
-      showUnused: false,
-      folding: false,
-      lineNumbersMinChars: 3,
-      fontSize: 16,
-      scrollBeyondLastLine: false,
-      automaticLayout: true,
-      
-    }}
-  />
-  </div>
+      <MonacoEditor
+        editorDidMount={onEditorDidMount}
+        value={initialValue}
+        theme="dark"
+        language="javascript"
+        height="500px"
+        options={{
+          wordWrap: 'on',
+          minimap: { enabled: false },
+          showUnused: false,
+          folding: false,
+          lineNumbersMinChars: 3,
+          fontSize: 16,
+          scrollBeyondLastLine: false,
+          automaticLayout: true,
+        }}
+      />
+    </div>
   );
 };
 
