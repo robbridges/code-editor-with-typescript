@@ -70,7 +70,11 @@ const App = () => {
 
   return (
   <div>
-    <textarea onChange={e => setInput(e.target.value) } value={input}></textarea>
+    <textarea 
+    onChange={e => setInput(e.target.value) } 
+    value={input}
+    >
+    </textarea>
     <div>
       <button onClick={onClick}>Submit</button>
     </div>
