@@ -6,20 +6,18 @@ import { fetchPlugin } from './plugins/fetch-plugin';
 
 const App = () => {
   const ref = useRef<any>();
+  const iframe = useRef<any>();
   const [input, setInput] =useState('Enter Text Here');
   const [code, setCode]= useState('');
 
   const startService = async () => {
-  try {
     ref.current = await esbuild.startService({
       worker: true,
       wasmURL: 'https://unpkg.com/esbuild-wasm@0.8.27/esbuild.wasm',
     });
-  } catch (err) {
-    console.log('there was an error!');
-  }
-    
   };
+    
+  
 
   useEffect(() => {
     startService();
@@ -44,8 +42,28 @@ const App = () => {
       },
     });
 
-    setCode(result.outputFiles[0].text);
+    //setCode(result.outputFiles[0].text);
+    iframe.current.contentWindow.postMessage(result.outputFiles[0].text, '*');
   };
+  
+  const html = `
+    <html>
+      <head></head>
+      <body>
+        <div id="root"></div>
+        <script>
+          window.addEventListener('message', (event) => {
+            try {
+              eval(event.data);
+            } catch (err) {
+              const root = document.querySelector('#root');
+              root.innerHTML = '<div style="color: red;"><h4>Runtime Error</h4>' + err + '</div>'
+            }
+          }, false);
+        </script>
+      </body>
+    </html>
+  `;
 
   return (
   <div>
@@ -54,13 +72,10 @@ const App = () => {
       <button onClick={onClick}>Submit</button>
     </div>
     <pre>{code}</pre>
-    <iframe sandbox="" srcDoc={html}></iframe>
+    <iframe ref={iframe} title="code-iframe" sandbox="allow-scripts" srcDoc={html}></iframe>
   </div>
   );
 };
 
-const html = `
-<h1>Local HTML doc</h1>
-`
 
 export default App;
