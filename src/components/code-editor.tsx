@@ -45,7 +45,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ onChange, initialValue }) => {
     editorRef.current.setValue(formatted);
   };
   
-  
+  // return the code editor below with all of the optional rules and settings. Yay dark mode!
   return (
     <div className="editor-wrapper">
       <button className="button button-format is-primary is-small" 
