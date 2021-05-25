@@ -2,7 +2,7 @@ import 'bulmaswatch/superhero/bulmaswatch.min.css';
 import CodeCell from './components/code-cell';
 
 const App = () => {
-  return (
+  return (  
   <div>
     <CodeCell />
     <CodeCell />
