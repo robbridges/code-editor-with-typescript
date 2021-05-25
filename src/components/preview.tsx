@@ -4,7 +4,7 @@ import {useEffect, useRef} from 'react';
 interface PreviewProps {
   code: string;
 }
-
+// this is our inner HTML screen, we are basically sneaking this past esbuild as it really wants a file system, and refuses to return a css file without without it. 
 const html = `
     <html>
       <head></head>
