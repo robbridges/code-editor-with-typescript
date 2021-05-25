@@ -1,3 +1,4 @@
+import './code-editor-styles.css';
 import { useRef } from 'react';
 import MonacoEditor, { EditorDidMount } from '@monaco-editor/react';
 import prettier from 'prettier';
@@ -10,21 +11,21 @@ typescript knows what values are being passed in. We are giving users an option
 the option to even format their code with prettier!
 */
 interface CodeEditorProps {
-  initalValue: string;
+  initialValue: string;
   onChange(value: string): void;
 
 }
 
-const CodeEditor: React.FC<CodeEditorProps> = ({ onChange, initalValue }) => {
+const CodeEditor: React.FC<CodeEditorProps> = ({ onChange, initialValue }) => {
   const editorRef = useRef<any>();
   
-  const onEditorDidMount: EditorDidMount = (getValue, monacoEditor) => {
-    editorRef.current = monacoEditor;
-    monacoEditor.onDidChangeModelContent(() => {
+  const onEditorDidMount: EditorDidMount = (getValue, MonacoEditor) => {
+    editorRef.current = MonacoEditor;
+    MonacoEditor.onDidChangeModelContent(() => {
       onChange(getValue());
     });
 
-    monacoEditor.getModel()?.updateOptions({ tabSize: 2});
+    MonacoEditor.getModel()?.updateOptions({ tabSize: 2});
   };
 
   const onFormatClick = () => {
@@ -38,35 +39,35 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ onChange, initalValue }) => {
       useTabs: false,
       semi: true,
       singleQuote: true,
-    });
+    }).replace(/\n$/, '');
 
     // set the formatted value back in the editor
     editorRef.current.setValue(formatted);
   };
   
-  
+  // return the code editor below with all of the optional rules and settings. Yay dark mode!
   return (
-    <div>
-      <button onClick={onFormatClick}>Format</button>
-   <MonacoEditor
-    editorDidMount={onEditorDidMount}
-    value= {initalValue}
-    theme='dark' 
-    language="javascript" 
-    height="500px"
-    options={{
-      wordWrap: 'on',
-      minimap: { enabled: false },
-      showUnused: false,
-      folding: false,
-      lineNumbersMinChars: 3,
-      fontSize: 16,
-      scrollBeyondLastLine: false,
-      automaticLayout: true,
-      
-    }}
-  />
-  </div>
+    <div className="editor-wrapper">
+      <button className="button button-format is-primary is-small" 
+      onClick={onFormatClick}>Format</button>
+      <MonacoEditor
+        editorDidMount={onEditorDidMount}
+        value={initialValue}
+        theme="dark"
+        language="javascript"
+        height="500px"
+        options={{
+          wordWrap: 'on',
+          minimap: { enabled: false },
+          showUnused: false,
+          folding: false,
+          lineNumbersMinChars: 3,
+          fontSize: 16,
+          scrollBeyondLastLine: false,
+          automaticLayout: true,
+        }}
+      />
+    </div>
   );
 };
 
