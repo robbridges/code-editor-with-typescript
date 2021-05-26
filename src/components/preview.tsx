@@ -17,7 +17,7 @@ const html = `
             } catch (err) {
               const root = document.querySelector('#root');
               root.innerHTML = '<div style="color: red;"><h4>Runtime Error</h4>' + err + '</div>';
-              throw err;
+              console.error(err);
             }
           }, false);
         </script>
