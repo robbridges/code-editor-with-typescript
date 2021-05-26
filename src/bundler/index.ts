@@ -13,21 +13,33 @@ const bundler = async (rawCode: string) => {
     });
   }
   //passes the code along  to the code cell terminal which actually houses our web based code editor and preview iframe
-  const result = await service.build({
-    entryPoints:['index.js'],
-    bundle: true,
-    write: false,
-    plugins: [
-      unpkgPathPlugin(),
-      fetchPlugin(rawCode),
-    ],
-    define: {
-      'process.env.NODE_ENV': '"production"',
-      global: 'window',
-    },
+  try 
+  {
+    const result = await service.build({
+      entryPoints:['index.js'],
+      bundle: true,
+      write: false,
+      plugins: [
+        unpkgPathPlugin(),
+        fetchPlugin(rawCode),
+      ],
+      define: {
+        'process.env.NODE_ENV': '"production"',
+        global: 'window',
+      },
   });
+  return {
+    code: result.outputFiles[0].text,
+    err: '',
+  } 
+} catch (err) {
+  return {
+    code: '',
+    err: err.message, 
+  }
 
-  return result.outputFiles[0].text;
+}
+
 };
 
 export default bundler;

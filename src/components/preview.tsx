@@ -3,6 +3,7 @@ import {useEffect, useRef} from 'react';
 
 interface PreviewProps {
   code: string;
+  bundlingStatus: string;
 }
 /* this is our inner HTML screen, we are basically sneaking this past esbuild as it really wants a file system, and refuses to return a css file without without it.
   It essentially evaluates the data sent to the it by the plugin, and throws an error with the help of babel if there is an error. It also throws the error message
@@ -21,6 +22,7 @@ const html = `
           };
 
           window.addEventListener('error', (event) => {
+            event.preventDefault();
             handleError(event.error);
           });
 
@@ -36,7 +38,7 @@ const html = `
     </html>
   `;
 
-const Preview: React.FC<PreviewProps> = ({ code }) => {
+const Preview: React.FC<PreviewProps> = ({ code, bundlingStatus }) => {
   const iframe = useRef<any>();
     
   useEffect(() => {
@@ -47,6 +49,8 @@ const Preview: React.FC<PreviewProps> = ({ code }) => {
     
   }, [code]);
 
+  console.log(bundlingStatus);
+
 
   return (
   <div className = "preview-wrapper">
@@ -56,6 +60,7 @@ const Preview: React.FC<PreviewProps> = ({ code }) => {
     title="code-iframe" 
     sandbox="allow-scripts" 
     srcDoc={html} />
+    {bundlingStatus && <div className="preview-error">{bundlingStatus}</div>}
   </div>
   );
 };
