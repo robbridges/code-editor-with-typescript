@@ -4,7 +4,10 @@ import {useEffect, useRef} from 'react';
 interface PreviewProps {
   code: string;
 }
-// this is our inner HTML screen, we are basically sneaking this past esbuild as it really wants a file system, and refuses to return a css file without without it. 
+/* this is our inner HTML screen, we are basically sneaking this past esbuild as it really wants a file system, and refuses to return a css file without without it.
+  It essentially evaluates the data sent to the it by the plugin, and throws an error with the help of babel if there is an error. It also throws the error message
+  into the i-frame. Right now it only handles syncrohnous errors, working on fixing shortly to be a more useful error handler. 
+*/
 const html = `
     <html>
       <head></head>
