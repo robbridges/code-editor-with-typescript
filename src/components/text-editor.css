@@ -1,0 +1,9 @@
+/* Bulma css was conflicting with react markdown CSS. They both had a title
+We have to reset title in this file so that we do get strange cursor edit 
+behavior */
+
+.w-md-editor .title {
+  line-height: unset !important;
+  font-size: unset !important;
+  font-weight: unset !important;
+}
