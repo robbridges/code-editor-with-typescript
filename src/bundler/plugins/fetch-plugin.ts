@@ -2,7 +2,7 @@ import * as esbuild from 'esbuild-wasm';
 import axios from 'axios';
 import localForage from 'localforage';
 
-// create the fileCache with Local forage, this expands on the local storage that a website might offer. NOTE NOT SUPPORTED IN ALL BROWSERS
+// create the fileCache with Local forage, this expands on the local storage that a website might offer. NOTE NOT SUPPORTED IN ALL BROWSERS. Will revert to localStorage if it isn't
 const fileCache = localForage.createInstance({
   name: 'filecache',
 });

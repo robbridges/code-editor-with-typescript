@@ -5,7 +5,7 @@ import './resizeable.css';
 interface ResizableProps {
   direction: 'horizontal' | 'vertical';
 }
-
+// All that this class does is add a resizeable bar, two in fact to the code editor so that it can be made bigger, or the preview window bigger. Actually pretty complicated 
 const Resizable: React.FC<ResizableProps> = ({direction, children}) => {
   let resizableProps: ResizableBoxProps;
   const [innerHeight, setInnerHeight] = useState(window.innerHeight);
@@ -34,6 +34,7 @@ const Resizable: React.FC<ResizableProps> = ({direction, children}) => {
       window.removeEventListener('resize', listener);
     }
   }, [width]);
+  
   // we are assigning different props for the resizable box based on what direction it should be. 
   if (direction === 'horizontal') {
     resizableProps = {
