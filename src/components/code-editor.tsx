@@ -7,8 +7,8 @@ import parser from 'prettier/parser-babel';
 /*
 This is our code editor, thankfully they have wrapped the entire set up editor
 in a react component which we import. We are then giving it an interface so that 
-typescript knows what values are being passed in. We are giving users an option 
-the option to even format their code with prettier!
+typescript knows what values are being passed in. We are even giving users an option 
+the option to even format their code with prettier via the format button
 */
 interface CodeEditorProps {
   initialValue: string;
@@ -32,7 +32,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ onChange, initialValue }) => {
     // get current value from editor
     const unformatted = editorRef.current.getModel().getValue();
 
-    // format that value
+    // format that value with specific rules from prettier
     const formatted = prettier.format(unformatted, {
       parser: 'babel',
       plugins: [parser],

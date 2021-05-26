@@ -2,6 +2,7 @@ import * as esbuild from 'esbuild-wasm';
 import axios from 'axios';
 import localForage from 'localforage';
 
+// create the fileCache with Local forage, this expands on the local storage that a website might offer. NOTE NOT SUPPORTED IN ALL BROWSERS
 const fileCache = localForage.createInstance({
   name: 'filecache',
 });
@@ -41,7 +42,7 @@ export const fetchPlugin = (inputCode: string) => {
       const { data, request } = await axios.get(args.path);
       
 
-      // we need to escape any new lines, double quotes or single quotes and replace them to be ignored
+      // we need to escape any new lines, double quotes or single quotes and replace so that no new script tag or new lines can mess up our code
       const escaped = data
       .replace(/\n/g, '')
       .replace(/"/g, '\\"')
@@ -62,7 +63,7 @@ export const fetchPlugin = (inputCode: string) => {
         resolveDir: new URL('./', request.responseURL).pathname,
       };
     
-      //store resonse in cache
+      //store response in cache
       await fileCache.setItem(args.path, result);
     
       return result;
@@ -73,14 +74,14 @@ export const fetchPlugin = (inputCode: string) => {
       const { data, request } = await axios.get(args.path);
 
 
-      //store resonse in cache
+      //store response in cache
       const result: esbuild.OnLoadResult = {
         loader: 'jsx',
         contents: data,
         resolveDir: new URL('./', request.responseURL).pathname,
       };
     
-      //store resonse in cache
+      //store response in cache
       await fileCache.setItem(args.path, result);
     
       return result;

@@ -35,9 +35,7 @@ export const unpkgPathPlugin = () => {
           path: `https://unpkg.com/${args.path}`,
         } 
       });
-
-      // hi jacks the process of building that file. 
-      
     },
+    
   };
 };
