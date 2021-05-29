@@ -62,6 +62,6 @@ store.dispatch({
 //   }
 // })
 
-const id = store.getState().cells.order[0];
+
 
 console.log(store.getState());
