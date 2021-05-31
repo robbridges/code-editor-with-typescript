@@ -42,7 +42,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   // this is a single code cell instance, we are throwing in two resizable boxes, for for width, one for height, displaying the Monaco Code Editor, and the preview iframe. 
   return (
   <Resizable direction="vertical">
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'row'}}>
+    <div style={{ height: 'calc(100% - 8px)', display: 'flex', flexDirection: 'row'}}>
       <Resizable direction="horizontal">
       <CodeEditor initialValue={cell.content}
       onChange={(value) => updateCell(cell.id, value)} />
