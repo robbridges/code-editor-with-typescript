@@ -20,7 +20,9 @@ const initalState: CellState = {
   order: [],
   data: {}
 }
-
+/* below is our cell reducer, we have defined an interface above of the values it should recieve. Below are the actual action types that can be called, and what they do.
+mostly it is just moving the cell up and down, deleting it or creating a new one. 
+*/
 const reducer = produce((
   state: CellState = initalState, 
   action: Action
@@ -70,6 +72,7 @@ const reducer = produce((
     } 
 });
 
+//useful random number generator to give each cell a random ID. 
 const randomId = () => {
   return Math.random().toString(36).substr(2, 5);
 };
