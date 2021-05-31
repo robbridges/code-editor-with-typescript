@@ -3,4 +3,9 @@
 }
 .add-cell .divider {
   position: absolute;
+  top: 50%;
+  bottom: 50%;
+  border-bottom: 1px solid gray;
+  width: 100%;
+  z-index: -1;
 }
