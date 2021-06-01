@@ -1,13 +1,22 @@
-.progress-cover {
+.progress-wrapper {
   height: 100%;
   flex-grow: 1;
   background-color: white;
+  
+}
+
+
+.progress-cover {
+  height: 100%;
+  width: 100;
   display: flex;
   align-items: center;
   padding-left: 10%;
   padding-right: 10%;
   animation: fadeIn 0.5s;
 }
+
+
 /* 
 Our key in animation, we are telling it to fadeIn for 0.5s, then it won't even begin to show it until 2.5s later. 
 This is a css fix to the progress bar jerking in and out for easy compiles 
