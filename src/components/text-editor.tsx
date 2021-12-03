@@ -43,7 +43,7 @@ const TextEditor: React.FC<EditorCellProp> = ({cell}) => {
   return ( 
     <div className="text-editor card" onClick = {() => setEditing(true)}>
       <div className="card-content">
-        <MDEditor.Markdown source ={cell.content || `Click to edit a code cell, or leave a message for yourself. You can see your work by calling the show function. For example show\(1 + 1) will log to your console
+        <MDEditor.Markdown source ={cell.content || `Click to edit a code cell, or leave a message for yourself. You can see your work by calling the show function. For example show(1 + 1) will log to your console
       You can also import packages like React, give it a try by importing react then show(react)`} />
       </div>
     </div>  
