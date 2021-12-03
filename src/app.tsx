@@ -9,7 +9,7 @@ const App = () => {
   return (  
   <Provider store={store}>  
     <div>
-      <CellList />
+      <CellList  />
       
     </div>
   </Provider>
